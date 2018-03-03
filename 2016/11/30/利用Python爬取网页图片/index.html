@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/1-TotalPages-2.png">
 <meta property="og:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/1-TotalPages-3.png">
 <meta property="og:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/2-Result.png">
-<meta property="og:updated_time" content="2018-03-03T05:03:09.012Z">
+<meta property="og:updated_time" content="2018-03-03T05:10:16.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用Python爬取网页图片">
 <meta name="twitter:description" content="新开博客，为了撑撑场面，把我公众号里面为数不多的几篇文章搬过来。    上次说了关于爬取糗事百科段子以及统计发帖次数的爬虫，其实那个是爬虫最简单的运用。今天我们来看看如何利用Python爬虫来爬取网页上面的图片并将其按目录保存在本地文件系统，文章仅用于技术交流，请不要做坏事。">
@@ -366,8 +366,7 @@
 </blockquote>
 <h3 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h3><p>距离上次的文章已经过了好一段时间了，中间我又学习了一些新的可以用于写爬虫的库，真的是相当方便。但是考虑到学习得一步步的来，所以这次还是介绍最基础的那几个库，因为只有学会使用最基础的库来完成整个爬虫的代码才能对整个流程有一个自己的把握。</p>
 <p>当时在写爬图像的爬虫之前，在网上有搜索一些相关资料，发现好多哥们儿都是拿这个网站——<a href="http://www.m****.com" target="_blank" rel="noopener">http://www.m****.com</a> 开刀（为了避免被查水表，我就不详细写出来了，想知道的哥们儿肯定有办法知道-.-||），于是我也记下了这个网站。。为了便于后面讲解，这里简单介绍一下这个网站。这个网站是一个专门的图片站，里面有很多个模特的写真集，而每个模特又都有一系列的写真照，所以这里面会涉及到一个翻页的问题。好了，废话少说，下面开始正题。</p>
-<p>###　进入正题</p>
-<p>由于模特数量众多，而网站又没有使用动态加载的方式，所以在一个页面要显示出所有的模特肯定是不可能的或者是不好的。经过统计，每一页有3*8=24个模特，将页面拉到最下面，可以看到总页码是134，观察URL可以发现，每一页的URL除了页码部分都是一样的，这说明我们可以通过一个固定的BaseUrl和页码组合成我们需要的网址信息。</p>
+<h3 id="进入正题"><a href="#进入正题" class="headerlink" title="进入正题"></a>进入正题</h3><p>由于模特数量众多，而网站又没有使用动态加载的方式，所以在一个页面要显示出所有的模特肯定是不可能的或者是不好的。经过统计，每一页有3*8=24个模特，将页面拉到最下面，可以看到总页码是134，观察URL可以发现，每一页的URL除了页码部分都是一样的，这说明我们可以通过一个固定的BaseUrl和页码组合成我们需要的网址信息。</p>
 <p><img src="/2016/11/30/利用Python爬取网页图片/1-TotalPages-1.png" alt="页面显示总共的Page数" title="页面显示总共的Page数"></p>
 <p><img src="/2016/11/30/利用Python爬取网页图片/1-TotalPages-2.png" alt="页面源代码显示总共的Page数" title="页面源代码显示总共的Page数"></p>
 <p>当然，我们眼睛观察很简单，如何让程序知道有多少页呢？我们在页面点击鼠标右键来查看页面源代码，看看能不能在源代码里面找到，经过定位后发现，果然在源代码里面有这么一段：</p>
@@ -560,7 +559,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#缘由"><span class="nav-number">1.</span> <span class="nav-text">缘由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#成果展示"><span class="nav-number">2.</span> <span class="nav-text">成果展示</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#缘由"><span class="nav-number">1.</span> <span class="nav-text">缘由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入正题"><span class="nav-number">2.</span> <span class="nav-text">进入正题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#成果展示"><span class="nav-number">3.</span> <span class="nav-text">成果展示</span></a></li></ol></div>
             
 
           </div>
