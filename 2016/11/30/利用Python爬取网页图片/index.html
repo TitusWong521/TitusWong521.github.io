@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="原创,Python爬虫," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="新开博客，为了撑撑场面，把我公众号里面为数不多的几篇文章搬过来。    上次说了关于爬取糗事百科段子以及统计发帖次数的爬虫，其实那个是爬虫最简单的运用。今天我们来看看如何利用Python爬虫来爬取网页上面的图片并将其按目录保存在本地文件系统，文章仅用于技术交流，请不要做坏事。">
+<meta name="keywords" content="原创,Python爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Python爬取网页图片">
+<meta property="og:url" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/index.html">
+<meta property="og:site_name" content="Titus&#39; Cosmos">
+<meta property="og:description" content="新开博客，为了撑撑场面，把我公众号里面为数不多的几篇文章搬过来。    上次说了关于爬取糗事百科段子以及统计发帖次数的爬虫，其实那个是爬虫最简单的运用。今天我们来看看如何利用Python爬虫来爬取网页上面的图片并将其按目录保存在本地文件系统，文章仅用于技术交流，请不要做坏事。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/1-TotalPages-1.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/1-TotalPages-2.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/1-TotalPages-3.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/2-Result.png">
+<meta property="og:updated_time" content="2018-03-03T05:03:09.012Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用Python爬取网页图片">
+<meta name="twitter:description" content="新开博客，为了撑撑场面，把我公众号里面为数不多的几篇文章搬过来。    上次说了关于爬取糗事百科段子以及统计发帖次数的爬虫，其实那个是爬虫最简单的运用。今天我们来看看如何利用Python爬虫来爬取网页上面的图片并将其按目录保存在本地文件系统，文章仅用于技术交流，请不要做坏事。">
+<meta name="twitter:image" content="http://yoursite.com/2016/11/30/利用Python爬取网页图片/1-TotalPages-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/30/利用Python爬取网页图片/"/>
+
+
+
+
+
+  <title>利用Python爬取网页图片 | Titus' Cosmos</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Titus' Cosmos</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/30/利用Python爬取网页图片/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Titus.Wong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Titus' Cosmos">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">利用Python爬取网页图片</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-30T12:44:47+08:00">
+                2016-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/source/categories/Python爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">Python爬虫</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>新开博客，为了撑撑场面，把我公众号里面为数不多的几篇文章搬过来。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>上次说了关于爬取糗事百科段子以及统计发帖次数的爬虫，其实那个是爬虫最简单的运用。今天我们来看看如何利用Python爬虫来爬取网页上面的图片并将其按目录保存在本地文件系统，文章仅用于技术交流，请不要做坏事。<br><a id="more"></a></p>
+</blockquote>
+<h3 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h3><p>距离上次的文章已经过了好一段时间了，中间我又学习了一些新的可以用于写爬虫的库，真的是相当方便。但是考虑到学习得一步步的来，所以这次还是介绍最基础的那几个库，因为只有学会使用最基础的库来完成整个爬虫的代码才能对整个流程有一个自己的把握。</p>
+<p>当时在写爬图像的爬虫之前，在网上有搜索一些相关资料，发现好多哥们儿都是拿这个网站——<a href="http://www.m****.com" target="_blank" rel="noopener">http://www.m****.com</a> 开刀（为了避免被查水表，我就不详细写出来了，想知道的哥们儿肯定有办法知道-.-||），于是我也记下了这个网站。。为了便于后面讲解，这里简单介绍一下这个网站。这个网站是一个专门的图片站，里面有很多个模特的写真集，而每个模特又都有一系列的写真照，所以这里面会涉及到一个翻页的问题。好了，废话少说，下面开始正题。</p>
+<p>###　进入正题</p>
+<p>由于模特数量众多，而网站又没有使用动态加载的方式，所以在一个页面要显示出所有的模特肯定是不可能的或者是不好的。经过统计，每一页有3*8=24个模特，将页面拉到最下面，可以看到总页码是134，观察URL可以发现，每一页的URL除了页码部分都是一样的，这说明我们可以通过一个固定的BaseUrl和页码组合成我们需要的网址信息。</p>
+<p><img src="/2016/11/30/利用Python爬取网页图片/1-TotalPages-1.png" alt="页面显示总共的Page数" title="页面显示总共的Page数"></p>
+<p><img src="/2016/11/30/利用Python爬取网页图片/1-TotalPages-2.png" alt="页面源代码显示总共的Page数" title="页面源代码显示总共的Page数"></p>
+<p>当然，我们眼睛观察很简单，如何让程序知道有多少页呢？我们在页面点击鼠标右键来查看页面源代码，看看能不能在源代码里面找到，经过定位后发现，果然在源代码里面有这么一段：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">class</span>=<span class="string">"navigation pagination"</span> <span class="attr">role</span>=<span class="string">"navigation"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">"screen-reader-text"</span>&gt;</span>Posts navigation<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"nav-links"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">'page-numbers current'</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>1<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">'page-numbers'</span> <span class="attr">href</span>=<span class="string">'http://www.m****.com/page/2'</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>2<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">'page-numbers'</span> <span class="attr">href</span>=<span class="string">'http://www.m****.com/page/3'</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>3<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">'page-numbers'</span> <span class="attr">href</span>=<span class="string">'http://www.m****.com/page/4'</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>4<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"page-numbers dots"</span>&gt;</span>&amp;hellip;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">'page-numbers'</span> <span class="attr">href</span>=<span class="string">'http://www.m****.com/page/134'</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>134<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"meta-nav screen-reader-text"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"next page-numbers"</span> <span class="attr">href</span>=<span class="string">"http://www.m****.com/page/2"</span>&gt;</span>下一页&amp;raquo;<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span>00<span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这样我们就可以用之前说过的匹配字符的正则表达式把这个页码匹配出来，代码以一个函数的形式列举出来，里面包含一些自定义的日志以及异常记录。如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取url对应的网页内容</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPage</span><span class="params">(self, url)</span>:</span></span><br><span class="line">    self.errorInfo += <span class="string">'Program run in Spider.getPage()\n'</span></span><br><span class="line">    self.programStatus += <span class="string">'正在抓取['</span> + url + <span class="string">']的网页内容...\n'</span></span><br><span class="line">    print(<span class="string">'正在抓取['</span> + url + <span class="string">']的网页内容...'</span>)    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        print(<span class="string">r'response = urllib.request.urlopen(url, timeout = 30)'</span>)</span><br><span class="line">        response = urllib.request.urlopen(url, timeout = <span class="number">30</span>)</span><br><span class="line">        print(<span class="string">"htmlData = response.read().decode('utf-8')"</span>)</span><br><span class="line">        htmlData = response.read().decode(<span class="string">'utf-8'</span>)        </span><br><span class="line">        <span class="keyword">return</span> htmlData    </span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        self.errorInfo += <span class="string">'[ErrorInfo]-[getPage]-[url]:'</span> + url + <span class="string">'\n'</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#获取首页的页数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPageCount</span><span class="params">(self, url)</span>:</span></span><br><span class="line">    self.errorInfo += <span class="string">'Program run in Spider.getPageCount()\n'</span></span><br><span class="line">    self.programStatus += <span class="string">'正在通过['</span> + url +<span class="string">']获取页面总数量...\n'</span></span><br><span class="line">    print(<span class="string">'正在通过['</span> + url +<span class="string">']获取页面总数量...'</span>)</span><br><span class="line">    returnValue = <span class="string">''</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        reStr = <span class="string">'&lt;/span&gt;([0-9]&#123;1,4&#125;)&lt;span class="meta-nav screen-reader-text"&gt;&lt;/span&gt;&lt;/a&gt;.&lt;a class="next page-numbers"'</span></span><br><span class="line">        htmlData = self.getPage(url)</span><br><span class="line">        pattern = re.compile(reStr, re.S)</span><br><span class="line">        items = re.findall(pattern, htmlData)</span><br><span class="line">        returnValue = <span class="string">'[items:][type]'</span> + str(type(items)) + <span class="string">'[Value]:'</span> + str(items)        </span><br><span class="line">        <span class="keyword">return</span> items[<span class="number">0</span>]    </span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        self.errorInfo += <span class="string">'[ErrorInfo]-[getPageCount]-[url]:'</span> + url + <span class="string">'\n'</span></span><br><span class="line">        self.errorInfo += <span class="string">'[ValueInfo]-[getPageCount]-[returnValue]:'</span> + returnValue + <span class="string">'\n'</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span></span><br></pre></td></tr></table></figure>
+<p>得到总页数是第一步，让我们知道一个具体的寻找范围。确定了寻找范围之后，我们就可以获取到所有模特的主页地址，代码里面我是使用一个list来存储这些地址的。</p>
+<p>上面得到了所有模特的主页地址，照例我们打开一个网页进行查看。这里就不打开了，只说结论：打开之后的网页一般只有一张图片，写真集中的每一张照片分开在多个网页显示。与前面相似，这里每一张照片对应一个URL，而且每一个URL都是十分相似，只是后面会有一部分随着页码的变化而变化。那么，我们使用相同的方法获取这里的页数，具体的代码就不贴了，大同小异，只是正则表达式改一下就好。同样，根据URL的规律组合得到每一个模特对应的所有照片的地址并存储在变量中。</p>
+<p><img src="/2016/11/30/利用Python爬取网页图片/1-TotalPages-3.png" alt="当前所在的Page序号" title="当前所在的Page序号"></p>
+<p>通过上面的操作我们得到了所有模特的主页地址，然后又通过操作获得了每一个模特的所有图片所在网页的地址，那么我们怎么才能拿到照片呢？很简单，网页上的任何一个元素都有一个URL对应它的存放位置，我们只需要将这个地址获取到就好。还是一样，通过正则表达式获取到每一个网页中照片对应的URL，根据模特来分别存储，这个URL长这样：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://i.m******.net/2016/11/26a04.jpg</span><br></pre></td></tr></table></figure>
+<p>下面是重头戏，也是抓取图片与抓取文本最不一样的地方，得到了照片的URL之后，同样通过getPage获取网页内容，这里不同的是因为我们要获取的图片，所以在保存的时候要采用二进制保存。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">response = urllib.request.urlopen(imagePath, timeout = <span class="number">30</span>)</span><br><span class="line">htmlData = response.read()</span><br><span class="line"><span class="keyword">with</span> open(path + <span class="string">'\\'</span> + imageName, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(htmlData)</span><br><span class="line">self.programStatus += <span class="string">'第['</span> + str(imageIndex) + <span class="string">']张照片抓取完成.\n'</span>print(<span class="string">'第['</span> + str(imageIndex) + <span class="string">']张照片抓取完成.'</span>)</span><br></pre></td></tr></table></figure>
+<p>看到打开文件的方式为”wb”就意味着以二进制方式写入，程序自动写入每一张照片，存放在对应的模特的文件夹内。现在你就可以静静的看着文件夹中照片一张一张的产生，然后开始打开观看吧。</p>
+<h3 id="成果展示"><a href="#成果展示" class="headerlink" title="成果展示"></a>成果展示</h3><p>目前这个代码还是最初的版本，完全是单线程，从开始运行到结束总共花了接近16个小时（前一天晚上9点开始运行，到第二天下午1点），而且中间由于网络问题以及我的其他下载动作导致网速太慢超时，导致好些照片都没有下载下来。不过因为异常处理的比较好，程序一直没有停下来，这也是程序成功结束的主要原因之一。第二天查看的时候，导出的文件夹下总共有2279个文件夹，总大小为2.96G，下面是截图。</p>
+<p><img src="/2016/11/30/利用Python爬取网页图片/2-Result.png" alt="爬取到的图片总大小" title="爬取到的图片总大小"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/原创/" rel="tag"># 原创</a>
+          
+            <a href="/source/tags/Python爬虫/" rel="tag"># Python爬虫</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/21/Python爬虫初探-文本爬虫/" rel="next" title="Python爬虫初探-文本爬虫">
+                <i class="fa fa-chevron-left"></i> Python爬虫初探-文本爬虫
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/28/马太效应/" rel="prev" title="马太效应">
+                马太效应 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Titus.Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#缘由"><span class="nav-number">1.</span> <span class="nav-text">缘由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#成果展示"><span class="nav-number">2.</span> <span class="nav-text">成果展示</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Titus.Wong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
