@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="最近在看TensorFlow的视频，跟着视频会写一些Code，存在本地怕丢失了，于是产生存在Github的想法。刚好我本身就在Github上有一个相关的仓库，于是需要在本地进行Github代码的相关操作，这篇文章应运而生。  运行环境我的运行环境是Debian GNU/Linux 9 (stretch) 64 位，git 2.11.0，同时要安装好ssh，当然还需要你提前准备好一个Github账">
+<meta name="description" content="最近在看TensorFlow的视频，跟着视频会写一些Code，存在本地怕丢失了，于是产生存在Github的想法。刚好我本身就在Github上有一个相关的仓库，于是需要在本地进行Github代码的相关操作，这篇文章应运而生。">
 <meta name="keywords" content="原创,git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在本地更新github代码库">
 <meta property="og:url" content="http://yoursite.com/2018/03/12/在本地更新github代码库/index.html">
 <meta property="og:site_name" content="Titus&#39; Cosmos">
-<meta property="og:description" content="最近在看TensorFlow的视频，跟着视频会写一些Code，存在本地怕丢失了，于是产生存在Github的想法。刚好我本身就在Github上有一个相关的仓库，于是需要在本地进行Github代码的相关操作，这篇文章应运而生。  运行环境我的运行环境是Debian GNU/Linux 9 (stretch) 64 位，git 2.11.0，同时要安装好ssh，当然还需要你提前准备好一个Github账">
+<meta property="og:description" content="最近在看TensorFlow的视频，跟着视频会写一些Code，存在本地怕丢失了，于是产生存在Github的想法。刚好我本身就在Github上有一个相关的仓库，于是需要在本地进行Github代码的相关操作，这篇文章应运而生。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/03/12/在本地更新github代码库/1ssh-keygen.png">
 <meta property="og:image" content="http://yoursite.com/2018/03/12/在本地更新github代码库/2rsakey.png">
@@ -95,10 +95,10 @@
 <meta property="og:image" content="http://yoursite.com/2018/03/12/在本地更新github代码库/6ConfirmKey.png">
 <meta property="og:image" content="http://yoursite.com/2018/03/12/在本地更新github代码库/7gitaddress.png">
 <meta property="og:image" content="http://yoursite.com/2018/03/12/在本地更新github代码库/8Success.png">
-<meta property="og:updated_time" content="2018-03-12T14:45:37.762Z">
+<meta property="og:updated_time" content="2018-03-18T12:43:28.645Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在本地更新github代码库">
-<meta name="twitter:description" content="最近在看TensorFlow的视频，跟着视频会写一些Code，存在本地怕丢失了，于是产生存在Github的想法。刚好我本身就在Github上有一个相关的仓库，于是需要在本地进行Github代码的相关操作，这篇文章应运而生。  运行环境我的运行环境是Debian GNU/Linux 9 (stretch) 64 位，git 2.11.0，同时要安装好ssh，当然还需要你提前准备好一个Github账">
+<meta name="twitter:description" content="最近在看TensorFlow的视频，跟着视频会写一些Code，存在本地怕丢失了，于是产生存在Github的想法。刚好我本身就在Github上有一个相关的仓库，于是需要在本地进行Github代码的相关操作，这篇文章应运而生。">
 <meta name="twitter:image" content="http://yoursite.com/2018/03/12/在本地更新github代码库/1ssh-keygen.png">
 
 
@@ -364,6 +364,7 @@
         <blockquote>
 <p>最近在看TensorFlow的视频，跟着视频会写一些Code，存在本地怕丢失了，于是产生存在Github的想法。刚好我本身就在Github上有一个相关的仓库，于是需要在本地进行Github代码的相关操作，这篇文章应运而生。</p>
 </blockquote>
+<a id="more"></a>
 <h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><p>我的运行环境是Debian GNU/Linux 9 (stretch) 64 位，git 2.11.0，同时要安装好ssh，当然还需要你提前准备好一个Github账号。</p>
 <h3 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h3><p>怎么在Github新建一个仓库就不说了，这个基本没难度。</p>
 <p>仓库建好以后，我们需要将我们本地机器的rsa码与这个仓库绑定，操作过程如下：</p>
@@ -382,6 +383,10 @@
 <p><img src="/2018/03/12/在本地更新github代码库/5AddKey.png" alt="找到代码仓库Add deploy key按钮" title="找到代码仓库Add deploy key按钮"></p>
 <p>Title可以随便填，最好填一个有意义的（我填的是：Debian-DeepLearning），Key这一栏内填入刚才复制的rsa密钥，点击“Add key”即可。</p>
 <p><img src="/2018/03/12/在本地更新github代码库/6ConfirmKey.png" alt="配置rsa key" title="配置rsa key"></p>
+<p><strong> 补充 </strong></p>
+<blockquote>
+<p>这里还需要把复选框勾上，才能有修改的权限。<br>add on 2018/3/18</p>
+</blockquote>
 <p>现在可以开始准备在本地配置代码仓库了，操作过程如下：</p>
 <p>我们需要拿到仓库地址，以便clone到本地，如下图：</p>
 <p><img src="/2018/03/12/在本地更新github代码库/7gitaddress.png" alt="找到git代码仓库地址" title="找到git代码仓库地址"></p>
@@ -435,6 +440,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/18/git-无法读取远程存储库/" rel="prev" title="git:无法读取远程存储库">
+                git:无法读取远程存储库 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -511,7 +520,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
