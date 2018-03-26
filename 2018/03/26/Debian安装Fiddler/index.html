@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="原创,Debian,Fiddler,Mono," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="打算开始爬网易云音乐的评论，看了看网上的教程，准备一步一步自己来实现。过程中需要用到Fiddler，但是Fiddler对Linux支持不是很 好，安装过程可能会比较复杂。为了记录下来整个过程以免自己忘记，于是就有了这篇文章。">
+<meta name="keywords" content="原创,Debian,Fiddler,Mono">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debian安装Fiddler">
+<meta property="og:url" content="http://yoursite.com/2018/03/26/Debian安装Fiddler/index.html">
+<meta property="og:site_name" content="Titus&#39; Cosmos">
+<meta property="og:description" content="打算开始爬网易云音乐的评论，看了看网上的教程，准备一步一步自己来实现。过程中需要用到Fiddler，但是Fiddler对Linux支持不是很 好，安装过程可能会比较复杂。为了记录下来整个过程以免自己忘记，于是就有了这篇文章。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/03/26/Debian安装Fiddler/0下载Fiddler程序包.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/26/Debian安装Fiddler/1.Fiddler在Linux安装的说明.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/26/Debian安装Fiddler/2Mono安装帮助.png">
+<meta property="og:image" content="http://yoursite.com/2018/03/26/Debian安装Fiddler/3Fiddler成功启动.png">
+<meta property="og:updated_time" content="2018-03-26T15:02:52.295Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Debian安装Fiddler">
+<meta name="twitter:description" content="打算开始爬网易云音乐的评论，看了看网上的教程，准备一步一步自己来实现。过程中需要用到Fiddler，但是Fiddler对Linux支持不是很 好，安装过程可能会比较复杂。为了记录下来整个过程以免自己忘记，于是就有了这篇文章。">
+<meta name="twitter:image" content="http://yoursite.com/2018/03/26/Debian安装Fiddler/0下载Fiddler程序包.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/26/Debian安装Fiddler/"/>
+
+
+
+
+
+  <title>Debian安装Fiddler | Titus' Cosmos</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Titus' Cosmos</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/26/Debian安装Fiddler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Titus.Wong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Titus' Cosmos">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Debian安装Fiddler</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-26T21:32:53+08:00">
+                2018-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/source/categories/Debian/" itemprop="url" rel="index">
+                    <span itemprop="name">Debian</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>打算开始爬网易云音乐的评论，看了看网上的教程，准备一步一步自己来实现。过程中需要用到Fiddler，但是Fiddler对Linux支持不是很 好，安装过程可能会比较复杂。为了记录下来整个过程以免自己忘记，于是就有了这篇文章。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Fiddler简介"><a href="#Fiddler简介" class="headerlink" title="Fiddler简介"></a>Fiddler简介</h2><p>Fiddler是最强大最好用的Web调试工具之一，它能记录所有客户端和服务器的http和https请求，允许你监视，设置断点，甚至修改输入输出数据。Fiddler是用<code>C#</code>写出来的，它包含一个简单却功能强大的基于JScript .NET事件脚本子系统，它的灵活性非常棒，可以支持众多的http调试任务，并且能够使用.net框架语言进行扩展。</p>
+<p>你对HTTP协议越了解，你就能越掌握Fiddler的使用方法。你越使用Fiddler，就越能帮助你了解HTTP协议。<br>Fiddler无论对开发人员或者测试人员来说，都是非常有用的工具。</p>
+<h2 id="Fiddler安装"><a href="#Fiddler安装" class="headerlink" title="Fiddler安装"></a>Fiddler安装</h2><p>第一步肯定是上官网看看有没有直接的安装包，找到了，还很隐秘：</p>
+<p><img src="/2018/03/26/Debian安装Fiddler/0下载Fiddler程序包.png" alt="下载Fiddler程序包" title="下载Fiddler程序包"></p>
+<p>看到右下角，小小的角落里面藏着Linux版本的程序包。</p>
+<p>又在官网转了转，又找到了安装说明——<a href="https://www.telerik.com/blogs/fiddler-for-linux-beta-is-here/" title="Fiddler Linux安装说明" target="_blank" rel="noopener">Fiddler在Linux安装的说明</a>：</p>
+<p><img src="/2018/03/26/Debian安装Fiddler/1.Fiddler在Linux安装的说明.png" alt="Fiddler在Linux安装的说明" title="Fiddler在Linux安装的说明"></p>
+<p>如图所示，Fiddler提醒我们第一步应该先安装Mono，Mono又是个什么呢？</p>
+<h3 id="Mono简介"><a href="#Mono简介" class="headerlink" title="Mono简介"></a>Mono简介</h3><p>Mono是.NET Framework 的一种开源实现。Mono项目使开发者用各种语言（C＃,VB.NET等）开发的.NET应用程序，能在任何Mono支持的平台上运行, 包括Linux, Unix。Mono项目将使大家能开发出各种<code>跨平台</code>的应用程序, 并能极大提高开源领域的开发效率。作为一个有机的.NET整体, 它包括一个C#编译器, 一个公用语言运行时环境, 以及相关的一整套类库，他甚至还包括IDE、调试工具和文档浏览器。</p>
+<p>Mono项目的网址是：<a href="http://www.mono-project.com/" title="Mono项目官网" target="_blank" rel="noopener">Mono项目官网</a>，想深入了解的可以到官网详细了解一下。</p>
+<h3 id="Mono安装"><a href="#Mono安装" class="headerlink" title="Mono安装"></a>Mono安装</h3><p>同样，进入官网查看是否有安装帮助。果然，一下子就找到了：</p>
+<p><img src="/2018/03/26/Debian安装Fiddler/2Mono安装帮助.png" alt="Mono安装帮助" title="Mono安装帮助"></p>
+<p>可以看到Mono的安装说明更加简单粗暴，直接上命令，我也不多BB，马上开干：</p>
+<p>根据我的操作系统类型及版本（Debian 9）来确定合适的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF</span><br><span class="line">echo "deb http://download.mono-project.com/repo/debian stable-stretch main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install mono-devel</span><br></pre></td></tr></table></figure>
+<p>简单解释一下四句话都是什么意思：</p>
+<ul>
+<li><p>第一句：下载公钥。如果不下载公钥，下一步执行会报“不安全”的错误</p>
+</li>
+<li><p>第二句：在/etc/apt/sources.list中添加Mono的源</p>
+</li>
+<li><p>第三句：重新加载本地包数据库</p>
+</li>
+<li><p>第四句：安装Mono软件</p>
+</li>
+</ul>
+<p>但是我在自己机器上安装运行第一句的时候就出错了…</p>
+<h4 id="Mono安装出错"><a href="#Mono安装出错" class="headerlink" title="Mono安装出错"></a>Mono安装出错</h4><p>出错信息大概这样：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">titus@Titus:~$ gpg --recv-keys 9AA9BDB11BB1B99A21285A330664A76954265E8C</span><br><span class="line">gpg: failed to start the dirmngr '/usr/bin/dirmngr': No such file or directory</span><br><span class="line">gpg: connecting dirmngr at '/run/user/1000/gnupg/S.dirmngr' failed: No such file or directory</span><br><span class="line">gpg: keyserver receive failed: No dirmngr</span><br></pre></td></tr></table></figure>
+<p>我刚开始以为是因为没有<code>/usr/bin/dirmngr/</code>文件夹，于是我</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/bin/dirmngr/</span><br></pre></td></tr></table></figure>
+<p>重新运行，第一个错误确实不报了，但是第二条错误仍然存在。没办法了，只能网上看看大家是怎么处理的，一开始没看到什么相同的情况，但是看到这篇文章<a href="https://blog.josefsson.org/2017/06/19/openpgp-smartcard-under-gnome-on-debian-9-0-stretch/" title="OpenPGP smartcard under GNOME on Debian 9.0 Stretch" target="_blank" rel="noopener">“OpenPGP smartcard under GNOME on Debian 9.0 Stretch”</a>。虽然没怎么看懂这哥们儿咋了，但是发现他的文章里有这么一句：</p>
+<blockquote>
+<p>Surprisingly, dirmngr is also not shipped by default so it has to be installed manually.</p>
+<blockquote>
+<p>root@latte:~# apt-get install dirmngr</p>
+</blockquote>
+</blockquote>
+<p>我这才发现，原来<code>dirmngr</code>是一个软件，而且不是默认安装的，汗！</p>
+<p>安装好dirmngr之后，重新按照上述步骤一步步地安装好了Mono。</p>
+<h2 id="继续安装Fiddler"><a href="#继续安装Fiddler" class="headerlink" title="继续安装Fiddler"></a>继续安装Fiddler</h2><p>按照说明，先配置Mono：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/mono/mozroots --import --sync</span><br></pre></td></tr></table></figure>
+<p>接下来就是解压下载来的<code>fiddler-linux.zip</code>，注意要解压到当前账户有写入权限的目录下，我是直接解压到Home下。<br>这里就可以发现，我们下载来的程序包其实类似于绿色版的Fiddler，免安装。</p>
+<h2 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成"></a>大功告成</h2><p>按照惯例，这一节是大功告成～</p>
+<p>打开终端<code>cd</code>到解压的目录下，执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mono Fiddler.exe</span><br></pre></td></tr></table></figure>
+<p>到现在为止，Fiddler就配置好可以使用了。</p>
+<p><img src="/2018/03/26/Debian安装Fiddler/3Fiddler成功启动.png" alt="Fiddler成功启动" title="Fiddler成功启动"></p>
+<p>P.S. 好像MongoDB安装也是类似安装Mono的过程，过两天装上玩玩。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/source/tags/原创/" rel="tag"># 原创</a>
+          
+            <a href="/source/tags/Debian/" rel="tag"># Debian</a>
+          
+            <a href="/source/tags/Fiddler/" rel="tag"># Fiddler</a>
+          
+            <a href="/source/tags/Mono/" rel="tag"># Mono</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/20/Python虚拟环境更换pip源/" rel="next" title="Python虚拟环境更换pip源">
+                <i class="fa fa-chevron-left"></i> Python虚拟环境更换pip源
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Titus.Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiddler简介"><span class="nav-number">1.</span> <span class="nav-text">Fiddler简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiddler安装"><span class="nav-number">2.</span> <span class="nav-text">Fiddler安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mono简介"><span class="nav-number">2.1.</span> <span class="nav-text">Mono简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mono安装"><span class="nav-number">2.2.</span> <span class="nav-text">Mono安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mono安装出错"><span class="nav-number">2.2.1.</span> <span class="nav-text">Mono安装出错</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继续安装Fiddler"><span class="nav-number">3.</span> <span class="nav-text">继续安装Fiddler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大功告成"><span class="nav-number">4.</span> <span class="nav-text">大功告成</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Titus.Wong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
